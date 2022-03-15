@@ -1,13 +1,15 @@
 from tkinter import *
 from PIL import Image,ImageTk
-
+import time
+import variables as v 
+from variables import *
 root=Tk()
 root.title("Cyber Genesis Crew")
 root.state("zoomed")
 root.configure(background='#4B6495')
 bimg="E:/project_gui/background.png"
-bimg2="C:/Users/HIMANSHU SINGH/Pictures/Screenshots/cut2.png"
-bimg3="C:/Users/HIMANSHU SINGH/Pictures/project/pin.png"
+bimg2="D:\hackathon-batch-1\cut2.png"
+bimg3="D:\hackathon-batch-1\pin.png"
 # bimg3="C:/Users/HIMANSHU SINGH/Pictures/project/.png"
 
 img=Image.open(bimg2)
@@ -28,56 +30,83 @@ tkimage = ImageTk.PhotoImage(resize_img)
 
 photo=ImageTk.PhotoImage(resize_img)
 
-l1=Label(root,image=photo)
-l1.place(x=-10,y=-40)
+WIN=Label(root,image=photo)
+WIN.place(x=-10,y=-40)
+
+
+def values(shell_1,shell_2,og_value):
+
+    outputvol= int(volatage_input.get())
+    if(outputvol>og_value):
+        s1_val.configure(text=str(shell_1))
+        s2_val.configure(text=str(shell_2-(og_value-outputvol)))
+        shell_2=shell_2-outputvol
+    else:
+        s1_val.configure(text=str(shell_1-(og_value-outputvol)/2))
+        s2_val.configure(text=str(shell_2+(og_value-outputvol)/2))
+        shell_1=shell_1-(og_value-outputvol)/2
+        shell_2=shell_2-(og_value-outputvol)/2
+
+    og_value=outputvol    
+
 def set():
+    
     try:
-        l7.configure(text="Power Output : "+str(int(e1.get()))+" W")
+        if(0<=int(volatage_input.get())<=500):
+            POutput.configure(text="Power Output : "+str(int(volatage_input.get()))+" W")
+            PD_val.configure(text=volatage_input.get())
+            values(shell_1,shell_2,og_value)
+        else:
+            POutput.configure(text="Power Output : Out of range ")    
     except:
-        l7.configure(text="Power Output : Invalid Input !! ")
-    # if(e1.get()==int):
-    #     l7.configure(text="Power Output : "+e1.get()+" W")
+        POutput.configure(text="Power Output : Invalid Input !! ")
+    # if(volatage_input.get()==int):
+    #     POutput.configure(text="Power Output : "+volatage_input.get()+" W")
     # else:
-    #     l7.configure(text="Power Output : error ")
+    #     POutput.configure(text="Power Output : error ")
 # img=PhotoImage(file=bimg2)
 
-l2=Label(root,text="Shell-1 :",font=(('helvetica',17)),bg='#4B6495')
-l2.place(x=1040,y=20)
+def cancel():   
+    pass
 
-l3=Label(root,text="Shell-2 :",font=(('helvetica',17)),bg='#4B6495')
-l3.place(x=1040,y=135)
+s1=Label(root,text="Shell-1 :",font=(('helvetica',17)),bg='#4B6495')
+s1.place(x=1040,y=20)
 
-l4=Label(root,text="Potential Difference :",font=(('helvetica',17)),bg='#4B6495')
-l4.place(x=1040,y=250)
+s2=Label(root,text="Shell-2 :",font=(('helvetica',17)),bg='#4B6495')
+s2.place(x=1040,y=135)
 
-l21=Label(root,text="20220",font=(('helvetica',17)),fg="white",bg='#4472C4',width=17,height=2,borderwidth=1,relief="solid")
-l21.place(x=1040,y=57)
+PD=Label(root,text="Potential Difference :",font=(('helvetica',17)),bg='#4B6495')
+PD.place(x=1040,y=250)
 
-l31=Label(root,text="20000",font=(('helvetica',17)),fg="white",bg='#4472C4',width=17,height=2,borderwidth=1,relief="solid")
-l31.place(x=1040,y=172)
+s1_val=Label(root,text="22000",font=(('helvetica',17)),fg="white",bg='#4472C4',width=17,height=2,borderwidth=1,relief="solid")
+s1_val.place(x=1040,y=57)
 
-l41=Label(root,text=int(l21.cget("text"))-int(l31.cget("text")),font=(('helvetica',17)),fg="white",bg='#4472C4',width=17,height=2,borderwidth=1,relief="solid")
-l41.place(x=1040,y=287)
+s2_val=Label(root,text="21780",font=(('helvetica',17)),fg="white",bg='#4472C4',width=17,height=2,borderwidth=1,relief="solid")
+s2_val.place(x=1040,y=172)
+
+PD_val=Label(root,text=int(s1_val.cget("text"))-int(s2_val.cget("text")),font=(('helvetica',17)),fg="white",bg='#4472C4',width=17,height=2,borderwidth=1,relief="solid")
+PD_val.place(x=1040,y=287)
 
 Label(root,text="Set Output To :",font=(('helvetica',17)),bg='#4B6495').place(x=1040,y=380)
 
 # Label(root,text="null",font=((50)),padx=80,pady=20).place(x=1040,y=417)
-e1=Entry(root,font=(('helvetica',17)),width=15,justify=CENTER)
+volatage_input=Entry(root,font=(('helvetica',17)),width=15,justify=CENTER)
 
-e1.place(x=1040,y=430)
+volatage_input.place(x=1040,y=430)
 
 Button(root,text="SET",font=(('helvetica',15)),fg="white",bg='#4472C4',padx=24,pady=1,command=set).place(x=1040,y=490)
-Button(root,text="CANCEL",font=(('helvetica',15)),fg="white",bg='#4472C4',padx=0,pady=1).place(x=1145,y=490)
+Button(root,text="CANCEL",font=(('helvetica',15)),fg="white",bg='#4472C4',padx=0,pady=1,command=cancel).place(x=1145,y=490)
 
 #bottom
-l5=Label(root,text="Battery Status : 95%",bg="#4B6495",font=(('helvetica',17)))
-l5.place(x=50,y=600)
+Battery=Label(root,text="Battery Status : "+str(batper)+ "%",bg="#4B6495",font=(('helvetica',17)))
+Battery.place(x=50,y=600)
 
-l6=Label(root,text="Run-Out Time : 3 hr 2 min",bg="#4B6495",font=(('helvetica',17)))
-l6.place(x=380,y=600)
+Timer=Label(root,text="Run-Out Time : 3 hr 2 min",bg="#4B6495",font=(('helvetica',17)))
+Timer.place(x=380,y=600)
 
-l7=Label(root,text="Power Output : 220 W",bg="#4B6495",font=(('helvetica',17)))
-l7.place(x=750,y=600)
+POutput=Label(root,text="Power Output : 220 W",bg="#4B6495",font=(('helvetica',17)))
+POutput.place(x=750,y=600)
 
 
 root.mainloop()
+
